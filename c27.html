@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Câu 27 - Xóa dòng tương ứng</title>
+    <style>
+        /* Định dạng giao diện bảng theo hình mẫu */
+        table {
+            border-collapse: collapse;
+            background-color: #e2f0d9; /* Màu nền xanh lá nhạt */
+            font-family: Arial, sans-serif;
+        }
+
+        th, td {
+            border: 1px solid #b2d8b2;
+            padding: 6px 10px;
+            text-align: center;
+        }
+
+        th {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 140px;
+            padding: 2px 4px;
+            font-size: 14px;
+        }
+
+        /* Định dạng nút Xóa bo tròn */
+        .btn-delete {
+            border-radius: 12px;
+            padding: 2px 15px;
+            background-color: #f2f2f2;
+            border: 1px solid #777;
+            cursor: pointer;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn-delete:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Tổng</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" class="qty" value="2" oninput="tinhTong(this)"></td>
+                <td><input type="number" class="price" value="1000000" oninput="tinhTong(this)"></td>
+                <td><input type="text" class="total" value="2000000" readonly></td>
+                <td><button type="button" class="btn-delete" onclick="xoaDong(this)">Xóa</button></td>
+            </tr>
+            <tr>
+                <td><input type="number" class="qty" value="1" oninput="tinhTong(this)"></td>
+                <td><input type="number" class="price" value="500000" oninput="tinhTong(this)"></td>
+                <td><input type="text" class="total" value="500000" readonly></td>
+                <td><button type="button" class="btn-delete" onclick="xoaDong(this)">Xóa</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Chức năng chính: Xóa dòng chứa nút "Xóa" được chọn
+        function xoaDong(btn) {
+            // Hàm closest('tr') tìm thẻ <tr> cha gần nhất chứa nút vừa được nhấn
+            const row = btn.closest("tr");
+            row.remove(); // Xóa phần tử dòng đó khỏi giao diện
+        }
+
+        // Chức năng bổ sung: Tự động tính Tổng = Số lượng * Đơn giá khi thay đổi số
+        function tinhTong(input) {
+            const row = input.closest("tr");
+            const qty = parseFloat(row.querySelector(".qty").value) || 0;
+            const price = parseFloat(row.querySelector(".price").value) || 0;
+            row.querySelector(".total").value = qty * price;
+        }
+    </script>
+
+</body>
+</html>

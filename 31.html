@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add and remove items from a dropdown list</title>
+<style type="text/css">
+  * { box-sizing: border-box; }
+  body {
+    margin: 30px; min-height: 100vh;
+    background: linear-gradient(135deg, #e0f2f1, #e8eaf6);
+    font-family: "Segoe UI", Roboto, Arial, sans-serif; color: #1f2d3d;
+  }
+  .card {
+    max-width: 560px; margin: 0 auto; padding: 28px;
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(31, 45, 61, .12);
+  }
+  h1 { margin: 0 0 4px; font-size: 1.4rem; }
+  h2 { margin: 24px 0 10px; font-size: 1rem; }
+  p.sub { margin: 0 0 12px; color: #6b7a89; font-size: .95rem; }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; }
+  select, input[type=text] {
+    flex: 1; min-width: 150px; padding: 10px 12px; font: 1rem inherit; font-family: inherit;
+    border: 1px solid #cfd9df; border-radius: 8px; background: #fff; color: inherit;
+  }
+  input[type=color] {
+    width: 48px; height: 44px; padding: 3px; border: 1px solid #cfd9df;
+    border-radius: 8px; background: #fff; cursor: pointer;
+  }
+  input[type=button] {
+    padding: 10px 20px; border: 0; border-radius: 8px; cursor: pointer;
+    font: 600 1rem inherit; font-family: inherit; color: #fff;
+    transition: transform .1s, background .2s;
+  }
+  .btn-add { background: #00796b; }
+  .btn-add:hover { background: #00695c; }
+  .btn-remove { background: #c62828; }
+  .btn-remove:hover { background: #b71c1c; }
+  input[type=button]:active { transform: scale(.97); }
+  select:focus-visible, input:focus-visible { outline: 3px solid #80cbc4; outline-offset: 2px; }
+
+  .chips { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; min-height: 32px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+    border-radius: 999px; background: #f4f8f8; border: 1px solid #cfd9df; font-size: .9rem; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #9aa8b3; }
+  #msg { margin-top: 14px; min-height: 22px; font-size: .92rem; color: #6b7a89; }
+  #msg.ok { color: #00796b; }
+  #msg.removed, #msg.error { color: #c62828; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Thêm và xóa màu trong dropdown</h1>
+
+  <h2>Xóa màu</h2>
+  <p class="sub">Chọn một màu trong danh sách rồi nhấn "Select and Remove".</p>
+  <form onsubmit="return false">
+    <div class="controls">
+      <select id="colorSelect">
+        <option>Red</option>
+        <option>Green</option>
+        <option>White</option>
+        <option>Black</option>
+      </select>
+      <input type="button" class="btn-remove" onclick="removecolor()" value="Select and Remove">
+    </div>
+  </form>
+
+  <h2>Thêm màu</h2>
+  <p class="sub">Nhập tên màu, chọn màu hiển thị rồi nhấn "Add Color".</p>
+  <form onsubmit="addcolor(); return false">
+    <div class="controls">
+      <input type="text" id="newColor" placeholder="Ví dụ: Blue" maxlength="20">
+      <input type="color" id="newColorValue" value="#1e88e5" title="Chọn màu hiển thị">
+      <input type="button" class="btn-add" onclick="addcolor()" value="Add Color">
+    </div>
+  </form>
+
+  <div class="chips" id="chips"></div>
+  <div id="msg" aria-live="polite"></div>
+</div>
+
+<script>
+// Lưu màu hiển thị cho từng tên (key viết thường)
+var colors = { red: '#e53935', green: '#43a047', white: '#ffffff', black: '#212121' };
+
+function showMsg(text, type) {
+  var msg = document.getElementById('msg');
+  msg.className = type || '';
+  msg.textContent = text;
+}
+
+// Hiển thị các màu còn lại dưới dạng chip
+function renderChips() {
+  var select = document.getElementById('colorSelect');
+  var box = document.getElementById('chips');
+  box.innerHTML = '';
+  for (var i = 0; i < select.options.length; i++) {
+    var name = select.options[i].text;
+    var chip = document.createElement('span');
+    chip.className = 'chip';
+    var dot = document.createElement('span');
+    dot.className = 'dot';
+    dot.style.background = colors[name.toLowerCase()] || '#ccc';
+    chip.appendChild(dot);
+    chip.appendChild(document.createTextNode(name));
+    box.appendChild(chip);
+  }
+  if (select.options.length === 0) {
+    box.textContent = 'Danh sách trống.';
+  }
+}
+
+// Xóa option đang được chọn
+function removecolor() {
+  var select = document.getElementById('colorSelect');
+  if (select.options.length === 0) {
+    showMsg('Danh sách đã hết, không còn giá trị để xóa.', 'error');
+    return;
+  }
+  var name = select.options[select.selectedIndex].text;
+  select.remove(select.selectedIndex);
+  showMsg('Đã xóa: ' + name, 'removed');
+  renderChips();
+}
+
+// Thêm option mới vào cuối dropdown
+function addcolor() {
+  var select = document.getElementById('colorSelect');
+  var input = document.getElementById('newColor');
+  var name = input.value.trim();
+
+  if (name === '') {
+    showMsg('Vui lòng nhập tên màu.', 'error');
+    input.focus();
+    return;
+  }
+
+  // Không cho thêm trùng tên (không phân biệt hoa thường)
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].text.toLowerCase() === name.toLowerCase()) {
+      showMsg('Màu "' + name + '" đã có trong danh sách.', 'error');
+      return;
+    }
+  }
+
+  var option = document.createElement('option');
+  option.text = name;
+  select.add(option);                      // thêm vào cuối
+  select.selectedIndex = select.options.length - 1;  // chọn luôn màu mới
+
+  colors[name.toLowerCase()] = document.getElementById('newColorValue').value;
+  input.value = '';
+  showMsg('Đã thêm: ' + name, 'ok');
+  renderChips();
+}
+
+renderChips();
+</script>
+</body>
+</html>

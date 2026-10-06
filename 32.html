@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Display a random image.</title>
+<style type="text/css">
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; margin-top: 30px; min-height: 100vh; padding: 0 16px 32px;
+    background: linear-gradient(135deg, #e0f2f1, #e8eaf6);
+    font-family: "Segoe UI", Roboto, Arial, sans-serif; color: #1f2d3d;
+  }
+  .card {
+    max-width: 620px; margin: 0 auto; padding: 28px;
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(31, 45, 61, .12);
+  }
+  h1 { margin: 0 0 4px; font-size: 1.4rem; }
+  p.sub { margin: 0 0 20px; color: #6b7a89; font-size: .95rem; }
+  #jsstyle {
+    padding: 10px 24px; border: 0; border-radius: 8px; cursor: pointer;
+    font: 600 1rem inherit; font-family: inherit;
+    background: #00796b; color: #fff; transition: transform .1s, background .2s;
+  }
+  #jsstyle:hover { background: #00695c; }
+  #jsstyle:active { transform: scale(.97); }
+  #jsstyle:focus-visible { outline: 3px solid #80cbc4; outline-offset: 2px; }
+
+  #stage {
+    margin-top: 22px; min-height: 220px; padding: 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    border: 2px dashed #cfd9df; border-radius: 12px; background: #f4f8f8;
+  }
+  #stage img {
+    max-width: 100%; height: auto; border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(31, 45, 61, .2);
+    animation: appear .35s ease;
+  }
+  @keyframes appear { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+  .placeholder { color: #6b7a89; }
+  #info { font-size: .9rem; color: #6b7a89; text-align: center; overflow-wrap: anywhere; }
+  #info.error { color: #c62828; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Hiển thị ảnh ngẫu nhiên</h1>
+  <p class="sub">Mỗi lần nhấn "Show Image", chương trình chọn ngẫu nhiên một ảnh trong danh sách.</p>
+
+  <div>
+  <button id="jsstyle"
+  onclick="display_random_image();">Show Image</button>
+  </div>
+
+  <div id="stage">
+    <span class="placeholder" id="placeholder">Chưa có ảnh. Hãy nhấn nút phía trên.</span>
+    <div id="info" aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+// Danh sách ảnh: đường dẫn, chiều rộng, chiều cao
+var images = [
+  { src: "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg", width: "240", height: "160" },
+  { src: "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg",      width: "320", height: "195" },
+  { src: "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg",    width: "500", height: "343" }
+];
+
+var lastIndex = -1;
+
+function display_random_image() {
+  var stage = document.getElementById('stage');
+  var info = document.getElementById('info');
+
+  // Chọn ngẫu nhiên, tránh lặp lại ảnh vừa hiển thị
+  var index;
+  do {
+    index = Math.floor(Math.random() * images.length);
+  } while (index === lastIndex && images.length > 1);
+  lastIndex = index;
+  var item = images[index];
+
+  // Xóa ảnh cũ và chữ gợi ý
+  var old = stage.querySelector('img');
+  if (old) { stage.removeChild(old); }
+  var ph = document.getElementById('placeholder');
+  if (ph) { ph.style.display = 'none'; }
+
+  // Tạo thẻ img bằng DOM
+  var img = document.createElement('img');
+  img.src = item.src;
+  img.width = item.width;
+  img.height = item.height;
+  img.alt = 'Ảnh ngẫu nhiên số ' + (index + 1);
+
+  img.onload = function () {
+    info.className = '';
+    info.textContent = 'Ảnh ' + (index + 1) + '/' + images.length +
+      ' - ' + item.width + ' x ' + item.height;
+  };
+  img.onerror = function () {
+    img.style.display = 'none';
+    info.className = 'error';
+    info.textContent = 'Không tải được ảnh: ' + item.src;
+  };
+
+  stage.insertBefore(img, info);
+}
+</script>
+</body>
+</html>

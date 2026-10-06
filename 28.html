@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JS DOM paragraph style</title>
+<style>
+:root{--bg:#eef3f6;--card:#fff;--ink:#16252e;--muted:#5b6b75;--line:#cfd9df;--accent:#0b6e7f;--accent-ink:#fff;--code:#122630;--code-ink:#d7ecf2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b21;--card:#16262e;--ink:#e6f0f4;--muted:#93a6af;--line:#2b414b;--accent:#3cc0d6;--accent-ink:#06222a;--code:#0a141a;--code-ink:#cfe8ef}}
+:root[data-theme="dark"]{--bg:#0f1b21;--card:#16262e;--ink:#e6f0f4;--muted:#93a6af;--line:#2b414b;--accent:#3cc0d6;--accent-ink:#06222a;--code:#0a141a;--code-ink:#cfe8ef}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px}
+h2{font-size:1.05rem;margin:0 0 12px}
+#text{margin:0;padding:16px;border:1px dashed var(--line);border-radius:6px;min-height:64px;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+label{display:block;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+select,input[type=number],input[type=color]{width:100%;height:40px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit;padding:0 8px}
+input[type=color]{padding:3px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{font:inherit;height:42px;padding:0 20px;border-radius:6px;border:1px solid var(--accent);cursor:pointer}
+#jsstyle{background:var(--accent);color:var(--accent-ink);font-weight:600}
+#reset{background:transparent;color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.status{margin-top:14px;font-size:.9rem;color:var(--muted)}
+pre{margin:0;background:var(--code);color:var(--code-ink);padding:14px;border-radius:6px;overflow-x:auto;font:.85rem/1.55 Consolas,Menlo,monospace;max-width:100%}
+ol{margin:0;padding-left:20px}
+li{margin-bottom:6px}
+code{background:var(--bg);padding:1px 5px;border-radius:4px;font-family:Consolas,Menlo,monospace;font-size:.9em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Câu 28 – DOM xử lý sự kiện nhấn nút Style</h1>
+  <p class="sub">Khi người dùng nhấn nút <b>Style</b>, đoạn văn bản bên dưới sẽ đổi <code>fontSize</code>, <code>fontFamily</code> và <code>color</code>.</p>
+
+  <section>
+    <h2>Đoạn văn bản</h2>
+    <p id='text'>JavaScript Exercises - w3resource</p>
+    <div class="status" id="status" aria-live="polite">Style hiện tại: mặc định của trình duyệt.</div>
+  </section>
+
+  <section>
+    <h2>Tùy chọn style</h2>
+    <div class="grid">
+      <div><label for="size">Cỡ chữ (px)</label><input id="size" type="number" min="8" max="96" value="28"></div>
+      <div><label for="family">Phông chữ</label>
+        <select id="family">
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', serif" selected>Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+          <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+        </select></div>
+      <div><label for="color">Màu chữ</label><input id="color" type="color" value="#d6336c"></div>
+    </div>
+    <div>
+      <button id="jsstyle" onclick="js_style()">Style</button>
+      <button id="reset" onclick="js_reset()">Khôi phục</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Mã JavaScript xử lý</h2>
+<pre id="code">function js_style() {
+  var p = document.getElementById('text');
+  p.style.fontSize   = size   + 'px';
+  p.style.fontFamily = family;
+  p.style.color      = color;
+}</pre>
+  </section>
+
+  <section>
+    <h2>Cách hoạt động</h2>
+    <ol>
+      <li>Nút <code>#jsstyle</code> có thuộc tính <code>onclick="js_style()"</code>, nên hàm chạy mỗi lần nhấn.</li>
+      <li><code>document.getElementById('text')</code> lấy phần tử đoạn văn <code>&lt;p id='text'&gt;</code>.</li>
+      <li>Giá trị cỡ chữ, phông chữ, màu được đọc từ các ô nhập.</li>
+      <li>Gán vào <code>style.fontSize</code>, <code>style.fontFamily</code>, <code>style.color</code> để đổi giao diện ngay lập tức.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+function js_style() {
+  var p = document.getElementById('text');
+  var size = parseInt(document.getElementById('size').value, 10);
+  if (isNaN(size) || size < 8 || size > 96) {
+    document.getElementById('status').textContent = 'Cỡ chữ phải nằm trong khoảng 8–96 px.';
+    return;
+  }
+  var family = document.getElementById('family').value;
+  var color = document.getElementById('color').value;
+  p.style.fontSize = size + 'px';
+  p.style.fontFamily = family;
+  p.style.color = color;
+  document.getElementById('status').textContent =
+    'Đã áp dụng: fontSize = ' + p.style.fontSize + ', fontFamily = ' + p.style.fontFamily + ', color = ' + p.style.color;
+}
+function js_reset() {
+  var p = document.getElementById('text');
+  p.style.fontSize = '';
+  p.style.fontFamily = '';
+  p.style.color = '';
+  document.getElementById('status').textContent = 'Đã khôi phục style mặc định.';
+}
+</script>
+</body>
+</html>

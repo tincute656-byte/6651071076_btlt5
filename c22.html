@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Multiply and Divide</title>
+</head>
+
+<body>
+
+    <form>
+        <label>1st Number:</label>
+        <input type="number" id="so1">
+        <br><br>
+
+        <label>2nd Number:</label>
+        <input type="number" id="so2">
+        <br><br>
+
+        <button type="button" onclick="nhan()">Multiply</button>
+        <button type="button" onclick="chia()">Divide</button>
+
+        <p>The Result Is:</p>
+        <p id="ketqua"></p>
+    </form>
+
+    <script>
+        function nhan() {
+            let a = Number(document.getElementById("so1").value);
+            let b = Number(document.getElementById("so2").value);
+
+            let kq = a * b;
+
+            document.getElementById("ketqua").innerText = kq;
+        }
+
+        function chia() {
+            let a = Number(document.getElementById("so1").value);
+            let b = Number(document.getElementById("so2").value);
+
+            if (b == 0) {
+                document.getElementById("ketqua").innerText = "Không thể chia cho 0";
+            }
+            else {
+                let kq = a / b;
+
+                document.getElementById("ketqua").innerText = kq;
+            }
+        }
+    </script>
+
+</body>
+</html>

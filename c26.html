@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tính Can Chi</title>
+
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        .khung {
+            width: 500px;
+            margin: 50px auto;
+            background-color: lightcyan;
+            border: 1px solid;
+        }
+
+        .tieude {
+            text-align: center;
+            background-color: lightyellow;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .noidung {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 15px;
+        }
+
+        input {
+            width: 150px;
+            height: 25px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 55px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="khung">
+
+        <div class="tieude">
+            TÍNH CAN CHI CỦA NGÀY ÂM LỊCH
+        </div>
+
+        <div class="noidung">
+
+            <div>
+                <label>Năm dương lịch</label>
+                <br>
+                <input type="text" id="nam">
+            </div>
+
+            <button onclick="tinhCanChi()">---></button>
+
+            <div>
+                <label>Can chi năm âm lịch</label>
+                <br>
+                <input type="text" id="canChi" readonly>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function tinhCanChi() {
+
+            // Lấy năm người dùng nhập
+            let nam = Number(document.getElementById("nam").value);
+
+            // Kiểm tra năm có hợp lệ không
+            if (isNaN(nam) || nam <= 0 || !Number.isInteger(nam)) {
+                alert("Vui lòng nhập năm dương lịch hợp lệ!");
+                return;
+            }
+
+            // Danh sách Thiên Can
+            let can = [
+                "Canh", "Tân", "Nhâm", "Quý", "Giáp",
+                "Ất", "Bính", "Đinh", "Mậu", "Kỷ"
+            ];
+
+            // Danh sách Địa Chi
+            let chi = [
+                "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ",
+                "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"
+            ];
+
+            // Tính Can
+            let canNam = can[nam % 10];
+
+            // Tính Chi
+            let chiNam = chi[nam % 12];
+
+            // Ghép Can + Chi
+            let ketQua = canNam + " " + chiNam;
+
+            // Xuất kết quả
+            document.getElementById("canChi").value = ketQua;
+        }
+    </script>
+
+</body>
+</html>

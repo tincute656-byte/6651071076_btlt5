@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Câu 23 - Tính Tiền Lương</title>
+    <style>
+        /* Định dạng bảng theo hình minh họa */
+        table {
+            background-color: #fbe4d5; /* Màu nền cam nhạt */
+            border: 4px double #0000a0; /* Viền ngoài màu xanh nét đôi */
+            border-collapse: collapse;
+            font-family: "Times New Roman", Times, serif;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        td {
+            border: 1px solid #0000a0; /* Viền ô màu xanh */
+            padding: 6px 10px;
+        }
+
+        .center-cell {
+            text-align: center;
+        }
+
+        /* Định dạng nút bấm dạng bo tròn */
+        .btn-calc {
+            border-radius: 12px;
+            padding: 2px 15px;
+            background: #f2f2f2;
+            border: 1px solid #808080;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        input[type="number"], input[type="text"] {
+            font-weight: bold;
+            font-size: 16px;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sử dụng form và table -->
+    <form id="salaryForm">
+        <table>
+            <tr>
+                <td>Lương</td>
+                <td>
+                    <input type="number" id="luong" value="1000000" style="width: 200px;">
+                </td>
+            </tr>
+            <tr>
+                <td>Hệ số lương</td>
+                <td>
+                    <input type="number" id="heSo" value="3.2" step="0.1" style="width: 80px;">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center-cell">
+                    <input type="button" class="btn-calc" value="Tính lương tháng" onclick="tinhLuong()">
+                </td>
+            </tr>
+            <tr>
+                <td>Lương tháng</td>
+                <td>
+                    <input type="text" id="luongThang" readonly value="3200000" style="width: 200px;">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        function tinhLuong() {
+            // Lấy giá trị từ các ô nhập liệu
+            const luong = parseFloat(document.getElementById("luong").value) || 0;
+            const heSo = parseFloat(document.getElementById("heSo").value) || 0;
+
+            // Tính Lương tháng = Lương * Hệ số lương
+            const luongThang = luong * heSo;
+
+            // Xuất kết quả vào ô Lương tháng
+            document.getElementById("luongThang").value = luongThang;
+        }
+    </script>
+
+</body>
+</html>

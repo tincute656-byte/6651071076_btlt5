@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm thứ trong tuần</title>
+</head>
+
+<body>
+
+    <form>
+        Ngày
+        <input type="number" id="ngay" value="12">
+
+        Tháng
+        <input type="number" id="thang" value="1">
+
+        năm
+        <input type="number" id="nam" value="2015">
+
+        <br><br>
+
+        <button type="button" onclick="xuatThu()">Xuất thứ</button>
+
+        <h3 id="ketqua"></h3>
+    </form>
+
+    <script>
+        function xuatThu() {
+            // Lấy dữ liệu từ form
+            let ngay = Number(document.getElementById("ngay").value);
+            let thang = Number(document.getElementById("thang").value);
+            let nam = Number(document.getElementById("nam").value);
+
+            // Tạo đối tượng Date
+            let date = new Date(nam, thang - 1, ngay);
+
+            // Lấy thứ
+            let thu = date.getDay();
+
+            // Đổi số thành thứ tiếng Việt
+            let tenThu;
+
+            if (thu == 0) {
+                tenThu = "Chủ nhật";
+            }
+            else {
+                tenThu = "Thứ " + (thu + 1);
+            }
+
+            // Xuất kết quả
+            document.getElementById("ketqua").innerText =
+                tenThu + " Ngày " + ngay +
+                " tháng " + thang +
+                " năm " + nam;
+        }
+    </script>
+
+</body>
+</html>
